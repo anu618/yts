@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const questionElement = document.querySelector('.question');
     const optionButtons = document.querySelectorAll('.option');
+    const timerElement = document.querySelector('.timer');
+    const timerInnerElement = document.querySelector('.timer-inner');
     const quizBody = document.querySelector('.quiz-body');
 
-    let timerElement, timerBarElement;
     let timer, nextQuestionTimer;
 
     function getRandomInt(min, max) {
@@ -44,26 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (timerElement) {
-            timerElement.remove();
-        }
-
-        timerElement = document.createElement('div');
-        timerElement.className = 'timer';
-        timerBarElement = document.createElement('div');
-        timerBarElement.className = 'timer-bar';
-        timerElement.appendChild(timerBarElement);
-        quizBody.appendChild(timerElement);
-
-        // Start the timer animation
-        setTimeout(() => {
-            timerBarElement.style.width = '100%';
-        }, 0);
-
-        // Automatically expose the correct answer after 3 seconds
-        timer = setTimeout(() => {
-            exposeCorrectAnswer(question.answer);
-        }, 3000);
+        // Reset and start the timer
+        resetTimer();
+        startTimer(3, question.answer);
     }
 
     function selectOption(button, index, correctAnswer) {
@@ -90,6 +74,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Automatically move to the next random question after 1 second
         nextQuestionTimer = setTimeout(() => {
             showQuestion(generateQuestion());
+        }, 1000);
+    }
+
+    function resetTimer() {
+        timerElement.style.background = 'conic-gradient(#6200ea 0% 0%, #333 0% 100%)';
+        timerInnerElement.textContent = '3';
+    }
+
+    function startTimer(duration, correctAnswer) {
+        let timeLeft = duration;
+        timerInnerElement.textContent = timeLeft;
+
+        timer = setInterval(() => {
+            timeLeft--;
+            timerInnerElement.textContent = timeLeft;
+            const percentage = ((duration - timeLeft) / duration) * 100;
+            timerElement.style.background = `conic-gradient(#6200ea 0% ${percentage}%, #333 ${percentage}% 100%)`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                exposeCorrectAnswer(correctAnswer);
+            }
         }, 1000);
     }
 
