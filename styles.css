@@ -110,10 +110,10 @@ body {
 
 .timer {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background: conic-gradient(#6200ea 0% 0%, #333 0% 100%);
+    background: #333;
     margin-top: 20px;
 }
 
@@ -131,4 +131,13 @@ body {
     align-items: center;
     color: #fff;
     font-size: 1.5em;
+}
+
+.timer-circle {
+    stroke: #6200ea;
+    stroke-width: 10;
+    fill: none;
+    stroke-dasharray: 314; /* 2 * Math.PI * 50 (radius) */
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 1s linear;
 }

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionButtons = document.querySelectorAll('.option');
     const timerElement = document.querySelector('.timer');
     const timerInnerElement = document.querySelector('.timer-inner');
+    const timerCircleElement = document.querySelector('.timer-circle');
     const quizBody = document.querySelector('.quiz-body');
 
     let timer, nextQuestionTimer;
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetTimer() {
-        timerElement.style.background = 'conic-gradient(#6200ea 0% 0%, #333 0% 100%)';
+        timerCircleElement.style.strokeDashoffset = 314;
         timerInnerElement.textContent = '3';
     }
 
@@ -89,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         timer = setInterval(() => {
             timeLeft--;
             timerInnerElement.textContent = timeLeft;
-            const percentage = ((duration - timeLeft) / duration) * 100;
-            timerElement.style.background = `conic-gradient(#6200ea 0% ${percentage}%, #333 ${percentage}% 100%)`;
+            const offset = 314 - (314 * (duration - timeLeft)) / duration;
+            timerCircleElement.style.strokeDashoffset = offset;
 
             if (timeLeft <= 0) {
                 clearInterval(timer);
